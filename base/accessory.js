@@ -146,10 +146,9 @@ class SunlightAccessory {
   // - - - - - - - - Open Weather functions - - - - - - - -
   getWeather() {
     const { platformConfig, log } = this;
-    const { lat, long, apikey } = platformConfig;
+    const { lat, long, apikey, weatherUpdateIntervalSeconds } = platformConfig;
 
-    // Only fetch new data once per minute
-    if (!this.cachedWeatherObj || this.lastupdate + 60 < (new Date().getTime() / 1000 | 0)) {
+    if (!this.cachedWeatherObj || (this.lastupdate + weatherUpdateIntervalSeconds) < (new Date().getTime() / 1000 | 0)) {
       let p = new Promise((resolve, reject) => {
         var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + apikey + '&lat=' + lat + '&lon=' + long;
         if (platformConfig.debugLog) log("Checking weather: %s", url);

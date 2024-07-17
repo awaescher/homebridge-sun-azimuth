@@ -32,6 +32,15 @@
                 "minimum": 0,
                 "maximum": 100
             },
+            "weatherUpdateIntervalSeconds": {
+                "type": "number",
+                "title": "Weather update interval in seconds",
+                "description": "The smaller the interval, the quicker the response to sun position and overcast updates but the more traffic you'll create. The free tier of the OpenWeather API is limited to 1,000,000 requests per month which is roughly one call every 3 seconds for a whole month.",
+                "required": true,
+                "default": 60,
+                "minimum": 3,
+                "maximum": 7200
+            },
             "sensors": {
                 "type": "array",
                 "title": "Sensors",
