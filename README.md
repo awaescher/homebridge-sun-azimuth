@@ -24,6 +24,7 @@ See `config-sample.json` for an example config. This plugin can also be configur
 | `lat`      | Latitude of the location the sun position should be calculated for   |
 | `long`     | Longitude of the location the sun position should be calculated for  |
 | `apikey`     | Your [OpenWeather API key](https://openweathermap.org/api), optional  |
+| `maxCloudCoverage` | Cloud coverage threshold in percent (100% is cloudy, 0% is sunny), below which the sensor should be activated. Only available if an OpenWeather API key is defined. |
 | `sensors`  | Array of objects containing configuration for the sensors, see below |
 | `debugLog` | Debug log output, optional, default: false                 |
 

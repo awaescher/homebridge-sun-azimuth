@@ -80,7 +80,7 @@ class SunlightAccessory {
 
   updateState() {
     const { config, platformConfig, log } = this;
-    const { lat, long, apikey } = platformConfig;
+    const { lat, long, apikey, maxCloudCoverage } = platformConfig;
     const { lowerThreshold, upperThreshold } = config;
     const threshold = [lowerThreshold, upperThreshold];
 
@@ -126,9 +126,9 @@ class SunlightAccessory {
     // Sun is in relevant azimuth range, lets check daylight and clouds
     if (newState && apikey) {
       let sunState = this.returnSunFromCache();
-      let cloudState = this.returnCloudinessFromCache();
+      let cloudCoverage = this.returnCloudinessFromCache();
       if (platformConfig.debugLog) log(`Sun state: ${sunState}%, Cloud state: ${cloudState}%`);
-      newState = sunState > 10 && sunState <90 && cloudState <= 25;
+      newState = sunState > 10 && sunState < 90 && cloudCoverage <= maxCloudCoverage;
     }
 
     return newState;

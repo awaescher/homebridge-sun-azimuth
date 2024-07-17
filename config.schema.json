@@ -23,6 +23,15 @@
                 "description": "If API key is provided, sunhsine is reported only during daylight times when sky is not overcast",
                 "required": false
             },
+            "maxCloudCoverage": {
+                "type": "number",
+                "title": "Cloud coverage threshold in percent",
+                "description": "Cloud coverage threshold in percent (100% is cloudy, 0% is sunny), below which the sensor should be activated. Only available if an OpenWeather API key is defined.",
+                "required": true,
+                "default": 25,
+                "minimum": 0,
+                "maximum": 100
+            },
             "sensors": {
                 "type": "array",
                 "title": "Sensors",
