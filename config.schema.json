@@ -23,10 +23,10 @@
                 "description": "If API key is provided, sunhsine is reported only during daylight times when sky is not overcast",
                 "required": false
             },
-            "maxCloudCoverage": {
+            "highestAcceptableOvercast": {
                 "type": "number",
-                "title": "Cloud coverage threshold in percent",
-                "description": "Cloud coverage threshold in percent (100% is cloudy, 0% is sunny), below which the sensor should be activated. Only available if an OpenWeather API key is defined.",
+                "title": "Highest acceptable overcast (in percent)",
+                "description": "Overcast threshold in percent, below which the sensor should be activated. 0% is sunny, 25% is slightly cloudy and 100% is cloudy. Only available if an OpenWeather API key is defined.",
                 "required": true,
                 "default": 25,
                 "minimum": 0,
