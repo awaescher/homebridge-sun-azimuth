@@ -25,6 +25,7 @@ See `config-sample.json` for an example config. This plugin can also be configur
 | `long`     | Longitude of the location the sun position should be calculated for  |
 | `apikey`     | Your [OpenWeather API key](https://openweathermap.org/api), optional  |
 | `highestAcceptableOvercast` | Overcast threshold in percent, below which the sensor should be activated. 0% is sunny, 25% is slightly cloudy and 100% is cloudy. Only available if an OpenWeather API key is defined. |
+| `weatherUpdateIntervalSeconds` | The smaller the interval, the quicker the response to sun position and overcast updates but the more traffic it'll create. The free tier of the OpenWeather API is limited to 1,000,000 requests per month which is roughly one call every 3 seconds for a whole month. |
 | `sensors`  | Array of objects containing configuration for the sensors, see below |
 | `debugLog` | Debug log output, optional, default: false                 |
 
@@ -37,6 +38,8 @@ Define contact sensors for one or more sections of the sky, e.g. for windows loo
 | `name`           | Display name of the sensor                                                                                |
 | `lowerThreshold` | Left side of sky section within which the sensor should activate |
 | `upperThreshold` | Right side of sky section within which the sensor should activate |
+| `lowerAltitudeThreshold` | Lower altitude threshold for the sun's position above the horizon, above which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith. |
+| `upperAltitudeThreshold` | Upper altitude threshold for the sun's position above the horizon, below which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith. |
 
 **Thresholds example**: If you want the sensor to turn on when the sun is between 0° and 90° azimuth, set the lower threshold to 0 and the upper threshold to 90. See the example configuration file for a basic set-up (north, east, south, west).
 

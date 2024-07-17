@@ -81,8 +81,8 @@ class SunlightAccessory {
   updateState() {
     const { config, platformConfig, log } = this;
     const { lat, long, apikey, highestAcceptableOvercast } = platformConfig;
-    const { lowerThreshold, upperThreshold } = config;
-    const threshold = [lowerThreshold, upperThreshold];
+    const { lowerThreshold, upperThreshold, lowerAltitudeThreshold, upperAltitudeThreshold } = config;
+    const azimuthThresholds = [lowerThreshold, upperThreshold];
 
     if (!lat || !long || typeof lat !== 'number' || typeof long !== 'number') {
       log('Error: Lat/Long incorrect. Please refer to the README.');
@@ -91,44 +91,35 @@ class SunlightAccessory {
 
     const sunPos = suncalc.getPosition(Date.now(), lat, long);
     let sunPosDegrees = Math.abs((sunPos.azimuth * 180) / Math.PI + 180);
+    let sunPosAltitude = Math.abs(sunPos.altitude * 90);
 
-    if (platformConfig.debugLog) log(`Current azimuth: ${sunPosDegrees}°`);
+    if (platformConfig.debugLog) log(`Current azimuth: ${sunPosDegrees}°, altitude: ${sunPosAltitude}°`);
 
-    if (threshold[0] > threshold[1]) {
-      const tempThreshold = threshold[1];
-      threshold[1] = threshold[0];
-      threshold[0] = tempThreshold;
+    if (azimuthThresholds[0] > azimuthThresholds[1]) {
+      const tempThreshold = azimuthThresholds[1];
+      azimuthThresholds[1] = azimuthThresholds[0];
+      azimuthThresholds[0] = tempThreshold;
     }
 
-    let newState;
-    if (sunPosDegrees >= threshold[0] && sunPosDegrees <= threshold[1]) {
-      newState = true;
-    } else {
-      newState = false;
-    }
-    if (threshold[0] < 0 && newState === false) {
+    const isWithinThreshold = (position) => position >= azimuthThresholds[0] && position <= azimuthThresholds[1] && sunPosAltitude >= lowerAltitudeThreshold && sunPosAltitude <= upperAltitudeThreshold;
+
+    let newState = isWithinThreshold(sunPosDegrees);
+    
+    if (azimuthThresholds[0] < 0 && !newState) {
       sunPosDegrees = -(360 - sunPosDegrees);
-      if (sunPosDegrees >= threshold[0] && sunPosDegrees <= threshold[1]) {
-        newState = true;
-      } else {
-        newState = false;
-      }
+      newState = isWithinThreshold(adjustedPos);
     }
-    if (threshold[1] > 360 && newState === false) {
+    
+    if (azimuthThresholds[1] > 360 && !newState) {
       sunPosDegrees = 360 + sunPosDegrees;
-      if (sunPosDegrees >= threshold[0] && sunPosDegrees <= threshold[1]) {
-        newState = true;
-      } else {
-        newState = false;
-      }
+      newState = isWithinThreshold(adjustedPos, azimuthThresholds);
     }
 
-    // Sun is in relevant azimuth range, lets check daylight and clouds
+    // Sun is in relevant azimuth and altitude range, lets check daylight and clouds
     if (newState && apikey) {
-      let sunState = this.returnSunFromCache();
       let overcast = this.returnOvercastFromCache();
-      if (platformConfig.debugLog) log(`Sun state: ${sunState}%, Cloud state: ${cloudState}%`);
-      newState = sunState > 10 && sunState < 90 && overcast <= highestAcceptableOvercast;
+      if (platformConfig.debugLog) log(`Cloud state: ${cloudState}%`);
+      newState = overcast <= highestAcceptableOvercast;
     }
 
     return newState;
@@ -180,27 +171,6 @@ class SunlightAccessory {
     }
     return value;
   };
-
-  returnSunFromCache() {
-    var value;
-    if (this.cachedWeatherObj && this.cachedWeatherObj["sys"]) {
-        var sunrise = parseInt(this.cachedWeatherObj["sys"]["sunrise"]);
-        var sunset = parseInt(this.cachedWeatherObj["sys"]["sunset"]);
-        var now = Math.round(new Date().getTime() / 1000);
-        if (now > sunset) {
-            // It's already dark outside
-            value = 100;
-        } else if (now > sunrise) {
-            // calculate how far though the day (where day is from sunrise to sunset) we are
-            var intervalLen = (sunset - sunrise);
-            value = (((now - sunrise) / intervalLen) * 100).toFixed(2);
-        } else {
-          value = 0;
-        }
-    }
-    return value;
-  };
-
 }
 
 module.exports = SunlightAccessory;
