@@ -107,12 +107,12 @@ class SunAzimuthAccessory {
     
     if (azimuthThresholds[0] < 0 && !newState) {
       sunPosDegrees = -(360 - sunPosDegrees);
-      newState = isWithinThreshold(adjustedPos);
+      newState = isWithinThreshold(sunPosDegrees);
     }
     
     if (azimuthThresholds[1] > 360 && !newState) {
       sunPosDegrees = 360 + sunPosDegrees;
-      newState = isWithinThreshold(adjustedPos, azimuthThresholds);
+      newState = isWithinThreshold(sunPosDegrees, azimuthThresholds);
     }
 
     // Sun is in relevant azimuth and altitude range, lets check daylight and clouds

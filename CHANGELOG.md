@@ -1,5 +1,10 @@
 ## Change Log
 
+### v0.3.x (2024/07/18 21:09)
+- feature: Make "Highest acceptable overcast" configurable
+- feature: Make "Lower/Upper Altitude Thresholds" configurable per sensor
+- feature: Make the weather update interval configurable
+
 ### v0.2.3 (2021/05/13 23:45)
 - fix: device serial number must have at least 3 digits
 - fix: avoid divergent sensor cloud state by checking cloud state at uneven times
