@@ -118,7 +118,7 @@ class SunAzimuthAccessory {
     // Sun is in relevant azimuth and altitude range, lets check daylight and clouds
     if (newState && apikey) {
       let overcast = this.returnOvercastFromCache();
-      if (platformConfig.debugLog) log(`Cloud state: ${cloudState}%`);
+      if (platformConfig.debugLog) log(`Overcast (cloud state): ${overcast}%`);
       newState = overcast <= highestAcceptableOvercast;
     }
 
