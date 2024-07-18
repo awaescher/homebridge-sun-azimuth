@@ -1,13 +1,17 @@
 {
-  "name": "homebridge-sunlight",
-  "displayName": "Sunlight",
-  "version": "0.2.3",
+  "name": "homebridge-sun-azimuth",
+  "displayName": "Sun Azimuth",
+  "version": "0.3.0",
   "description": "Homebridge plugin for contact sensors monitoring sun position, daylight and cloudiness",
-  "author": "Christian Wegerhoff <christian.wegerhoff@icloud.com>",
+  "author": "awaescher",
   "contributors": [
     {
       "name": "Maximilian Krause",
       "email": "hello@max-krause.com"
+    },
+    {
+      "name": "Christian Wegerhoff",
+      "email": "christian.wegerhoff@icloud.com"
     }
   ],
   "engines": {
@@ -18,15 +22,17 @@
     "homebridge-plugin",
     "sunlight",
     "sun",
+    "azimuth",
+    "sun azimuth",
     "sun protection",
     "window covering"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/Krillle/homebridge-sunlight.git"
+    "url": "git://github.com/awaescher/homebridge-sun-azimuth.git"
   },
   "bugs": {
-    "url": "https://github.com/Krillle/homebridge-sunlight/issues"
+    "url": "https://github.com/awaescher/homebridge-sun-azimuth/issues"
   },
   "license": "Apache-2.0",
   "dependencies": {

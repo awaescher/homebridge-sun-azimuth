@@ -1,7 +1,7 @@
 const suncalc = require('suncalc');
 const request = require('request');
 
-class SunlightAccessory {
+class SunAzimuthAccessory {
   constructor(log, config, platformConfig) {
     this.accessory = null;
     this.registered = null;
@@ -37,7 +37,7 @@ class SunlightAccessory {
     const accessory = new Accessory(config.name, uuid);
     // Add Device Information
     accessory.getService(Service.AccessoryInformation)
-      .setCharacteristic(Characteristic.Manufacturer, 'Krillle')
+      .setCharacteristic(Characteristic.Manufacturer, 'mfkrause, Krillle & awaescher')
       .setCharacteristic(Characteristic.Model, 'Azimuth ' + lowerThreshold + '-' + upperThreshold)
       .setCharacteristic(Characteristic.SerialNumber, '---');
 
@@ -173,4 +173,4 @@ class SunlightAccessory {
   };
 }
 
-module.exports = SunlightAccessory;
+module.exports = SunAzimuthAccessory;

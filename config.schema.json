@@ -1,9 +1,9 @@
 {
-    "pluginAlias": "Sunlight",
+    "pluginAlias": "Sun Azimuth",
     "pluginType": "platform",
     "singular": true,
     "headerDisplay": "This plugin provides contact sensors to automate sun protection. Sensors are opened (breached) when the sun is in a given section of the sky (azimuth) and optionally if an [OpenWeather API key](https://openweathermap.org/api) is provided when the sun is above the horizon and the sky is not overcast.",
-    "footerDisplay": "For help or in case of issues please visit the [GitHub repository](https://github.com/Krillle/homebridge-sunlight/issues). Based on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors).",
+    "footerDisplay": "For help or in case of issues please visit the [GitHub repository](https://github.com/awaescher/homebridge-sun-azimuth/issues). Based on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors) and [homebridge-sunlight](https://github.com/Krillle/homebridge-sunlight).",
     "schema": {
         "type": "object",
         "properties": {

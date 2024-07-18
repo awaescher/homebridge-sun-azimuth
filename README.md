@@ -1,6 +1,6 @@
-# Homebridge Sunlight
-[![npm-version](https://badgen.net/npm/v/homebridge-sunlight)](https://www.npmjs.com/package/homebridge-sunlight)
-[![npm-downloads](https://badgen.net/npm/dt/homebridge-sunlight)](https://www.npmjs.com/package/homebridge-sunlight)
+# Homebridge Sun Azimuth
+[![npm-version](https://badgen.net/npm/v/homebridge-sun-azimuth)](https://www.npmjs.com/package/homebridge-sun-azimuth)
+[![npm-downloads](https://badgen.net/npm/dt/homebridge-sun-azimuth)](https://www.npmjs.com/package/homebridge-sun-azimuth)
 
 
 This is a plugin for [homebridge](https://github.com/nfarina/homebridge). It provides contact sensors based on sun position and clouds to automate sun protection. Sensors are opened when the sun is in a defined section of the sky (azimuth) and optionally if an [OpenWeather API key](https://openweathermap.org/api) is provided when the sky is not overcast and sun is above the horizon.
@@ -10,7 +10,7 @@ This is a plugin for [homebridge](https://github.com/nfarina/homebridge). It pro
 Intall via hombridge GUI [homebridge-config-ui-x](https://github.com/oznu/homebridge-config-ui-x) or manually via:
 
 1.  Install homebridge (if not already installed) using: `npm install -g homebridge`
-2.  Install this plugin using: `npm install -g homebridge-sunlight`
+2.  Install this plugin using: `npm install -g homebridge-sun-azimuth`
 3.  Update your configuration file (see below).
 
 # Example Configuration
@@ -43,5 +43,5 @@ Define contact sensors for one or more sections of the sky, e.g. for windows loo
 
 **Thresholds example**: If you want the sensor to turn on when the sun is between 0° and 90° azimuth, set the lower threshold to 0 and the upper threshold to 90. See the example configuration file for a basic set-up (north, east, south, west).
 
-For help or in case of issues please visit the [GitHub repository](https://github.com/Krillle/homebridge-sunlight/issues).    
-This plugin is based on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors).
+For help or in case of issues please visit the [GitHub repository](https://github.com/awaescher/homebridge-sun-azimuth/issues).    
+This plugin is based  on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors) and [homebridge-sunlight](https://github.com/Krillle/homebridge-sunlight)..
