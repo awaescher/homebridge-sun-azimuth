@@ -1,6 +1,6 @@
 ## Change Log
 
-### v0.3.x (2024/07/18 21:09)
+### v0.3.3 (2024/07/18 21:22)
 - feature: Make "Highest acceptable overcast" configurable
 - feature: Make "Lower/Upper Altitude Thresholds" configurable per sensor
 - feature: Make the weather update interval configurable
