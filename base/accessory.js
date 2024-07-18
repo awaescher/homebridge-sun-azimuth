@@ -152,7 +152,7 @@ class SunAzimuthAccessory {
                   if (platformConfig.debugLog) log("Server response:", responseBody);
                   this.cachedWeatherObj = JSON.parse(responseBody);
                   this.lastupdate = (new Date().getTime() / 1000);
-                  log(`Sun state: ${this.returnSunFromCache()}%, Cloud state: ${this.returnCloudinessFromCache()}%`);
+                  log(`Cloud state: ${this.returnCloudinessFromCache()}%`);
                   resolve(response.statusCode);
               } catch (error2) {
                   log("Getting Weather failed: %s", error2, responseBody);
