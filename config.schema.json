@@ -1,9 +1,9 @@
 {
-    "pluginAlias": "Sunlight",
+    "pluginAlias": "Sun Azimuth",
     "pluginType": "platform",
     "singular": true,
     "headerDisplay": "This plugin provides contact sensors to automate sun protection. Sensors are opened (breached) when the sun is in a given section of the sky (azimuth) and optionally if an [OpenWeather API key](https://openweathermap.org/api) is provided when the sun is above the horizon and the sky is not overcast.",
-    "footerDisplay": "For help or in case of issues please visit the [GitHub repository](https://github.com/Krillle/homebridge-sunlight/issues). Based on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors).",
+    "footerDisplay": "For help or in case of issues please visit the [GitHub repository](https://github.com/awaescher/homebridge-sun-azimuth/issues). Based on [homebridge-sunsensors](https://github.com/mfkrause/homebridge-sunsensors) and [homebridge-sunlight](https://github.com/Krillle/homebridge-sunlight).",
     "schema": {
         "type": "object",
         "properties": {
@@ -31,6 +31,15 @@
                 "default": 25,
                 "minimum": 0,
                 "maximum": 100
+            },
+            "weatherUpdateIntervalSeconds": {
+                "type": "number",
+                "title": "Weather update interval in seconds",
+                "description": "The smaller the interval, the quicker the response to sun position and overcast updates but the more traffic it'll create. The free tier of the OpenWeather API is limited to 1,000,000 requests per month which is roughly one call every 3 seconds for a whole month.",
+                "required": true,
+                "default": 60,
+                "minimum": 3,
+                "maximum": 7200
             },
             "sensors": {
                 "type": "array",
@@ -60,6 +69,24 @@
                             "title": "Upper Threshold",
                             "description": "Right side of sky section within which the sensor should activate",
                             "required": true
+                        },
+                        "lowerAltitudeThreshold": {
+                            "type": "number",
+                            "title": "Lower Altitude Threshold",
+                            "description": "Lower altitude threshold for the sun's position above the horizon, above which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith.",
+                            "required": true,
+                            "default": 0,
+                            "minimum": 0,
+                            "maximum": 90
+                        },
+                        "upperAltitudeThreshold": {
+                            "type": "number",
+                            "title": "Upper Altitude Threshold",
+                            "description": "Upper altitude threshold for the sun's position above the horizon, below which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith.",
+                            "required": true,
+                            "default": 90,
+                            "minimum": 0,
+                            "maximum": 90
                         }
                     }
                 }
