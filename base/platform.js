@@ -1,3 +1,5 @@
+const request = require('request');
+
 const SunAzimuthAccessory = require('./accessory');
 
 let homebridge;
@@ -7,11 +9,13 @@ class SunAzimuthPlatform {
     this.config = config;
     this.log = log;
     this.accessories = [];
+    this.cachedWeatherObj = undefined;
+    this.checkingWeather = false;
 
     // Initialize accessories
     this.sensors = {};
     config.sensors.forEach((sensorConfig) => {
-      this.sensors[sensorConfig.name] = new SunAzimuthAccessory(log, sensorConfig, config);
+      this.sensors[sensorConfig.name] = new SunAzimuthAccessory(this, log, sensorConfig, config);
     });
 
     // Register new accessories after homebridge loaded
@@ -20,6 +24,12 @@ class SunAzimuthPlatform {
 
   registerAccessories() {
     const { log, config } = this;
+
+    // set up the weather updater
+    if (config.apikey) {
+      this.getWeather();
+      setInterval(() => { this.getWeather(); }, config.weatherUpdateIntervalSeconds * 1000);
+    }
 
     // Unregister removed accessories first
     let tempAccessories = [];
@@ -114,6 +124,63 @@ class SunAzimuthPlatform {
   configureAccessory(accessory) {
     this.accessories.push(accessory);
   }
+
+  getWeatherTemperaturCelsius() {
+    var value;
+    if (this.cachedWeatherObj && this.cachedWeatherObj["main"]) {
+      value = parseFloat(this.cachedWeatherObj["main"]["temp"]) / 10;
+    }
+    return value;
+  };
+
+  getWeatherOvercast() {
+    var value;
+    if (this.cachedWeatherObj && this.cachedWeatherObj["clouds"]) {
+      value = parseFloat(this.cachedWeatherObj["clouds"]["all"]);
+    }
+    return value;
+  };
+
+  getWeather() {
+    const { log, config } = this;
+
+    if (this.checkingWeather)
+      return;
+
+    this.checkingWeather = true;
+
+    let p = new Promise((resolve, reject) => {
+
+      var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + config.apikey + '&lat=' + config.lat + '&lon=' + config.long;
+      if (config.debugLog)
+        log("Checking weather: %s", url);
+
+      request(url, function (error, response, responseBody) {
+        if (error) {
+          log("HTTP get weather function failed: %s", error.message);
+          this.checkingWeather = false;
+          reject(error);
+        } else {
+          try {
+            if (config.debugLog)
+              log("Server response:", responseBody);
+
+            this.cachedWeatherObj = JSON.parse(responseBody);
+
+            log(`Temperature: ${this.getWeatherTemperaturCelsius()}°C, overcast (cloud state): ${this.getWeatherOvercast()}%`);
+
+            resolve(response.statusCode);
+
+            this.checkingWeather = false;
+          } catch (error2) {
+            log("Getting Weather failed: %s", error2, responseBody);
+            this.checkingWeather = false;
+            reject(error2);
+          }
+        }
+      }.bind(this))
+    })
+  };
 }
 
 /**
