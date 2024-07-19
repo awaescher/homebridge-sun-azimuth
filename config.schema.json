@@ -77,7 +77,7 @@
                             "required": true,
                             "default": 0,
                             "minimum": 0,
-                            "maximum": 90
+                            "maximum": 360
                         },
                         "upperAltitudeThreshold": {
                             "type": "number",
@@ -86,7 +86,7 @@
                             "required": true,
                             "default": 90,
                             "minimum": 0,
-                            "maximum": 90
+                            "maximum": 360
                         }
                     }
                 }
