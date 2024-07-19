@@ -10,7 +10,6 @@ class SunAzimuthAccessory {
     this.log = log;
 
     this.cachedWeatherObj = undefined;
-    this.lastupdate = 0;
     if (this.platformConfig.apikey) {
       this.getWeather();
       setInterval(() => { this.getWeather(); }, this.platformConfig.weatherUpdateIntervalSeconds * 1000);
@@ -147,31 +146,28 @@ class SunAzimuthAccessory {
   // - - - - - - - - Open Weather functions - - - - - - - -
   getWeather() {
     const { platformConfig, log } = this;
-    const { lat, long, apikey, weatherUpdateIntervalSeconds } = platformConfig;
+    const { lat, long, apikey } = platformConfig;
 
-    if (!this.cachedWeatherObj || (this.lastupdate + weatherUpdateIntervalSeconds) < (new Date().getTime() / 1000 | 0)) {
-      let p = new Promise((resolve, reject) => {
-        var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + apikey + '&lat=' + lat + '&lon=' + long;
-        if (platformConfig.debugLog) log("Checking weather: %s", url);
-        request(url, function (error, response, responseBody) {
-          if (error) {
-            log("HTTP get weather function failed: %s", error.message);
-            reject(error);
-          } else {
-            try {
-              if (platformConfig.debugLog) log("Server response:", responseBody);
-              this.cachedWeatherObj = JSON.parse(responseBody);
-              this.lastupdate = (new Date().getTime() / 1000);
-              log(`Temperature: ${this.returnTemperatureDegreeCelsiusFromCache()}°C, overcast (cloud state): ${this.returnOvercastFromCache()}%`);
-              resolve(response.statusCode);
-            } catch (error2) {
-              log("Getting Weather failed: %s", error2, responseBody);
-              reject(error2);
-            }
+    let p = new Promise((resolve, reject) => {
+      var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + apikey + '&lat=' + lat + '&lon=' + long;
+      if (platformConfig.debugLog) log("Checking weather: %s", url);
+      request(url, function (error, response, responseBody) {
+        if (error) {
+          log("HTTP get weather function failed: %s", error.message);
+          reject(error);
+        } else {
+          try {
+            if (platformConfig.debugLog) log("Server response:", responseBody);
+            this.cachedWeatherObj = JSON.parse(responseBody);
+            log(`Temperature: ${this.returnTemperatureDegreeCelsiusFromCache()}°C, overcast (cloud state): ${this.returnOvercastFromCache()}%`);
+            resolve(response.statusCode);
+          } catch (error2) {
+            log("Getting Weather failed: %s", error2, responseBody);
+            reject(error2);
           }
-        }.bind(this))
-      })
-    }
+        }
+      }.bind(this))
+    })
   };
 
   returnTemperatureDegreeCelsiusFromCache() {
