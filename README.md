@@ -25,8 +25,9 @@ See `config-sample.json` for an example config. This plugin can also be configur
 | ---------- | --------------------------------------------------------------------- |
 | `lat`      | Latitude of the location the sun position should be calculated for   |
 | `long`     | Longitude of the location the sun position should be calculated for  |
-| `apikey`     | Your [OpenWeather API key](https://openweathermap.org/api), optional  |
-| `highestAcceptableOvercast` | Overcast threshold in percent, below which the sensor should be activated. 0% is sunny, 25% is slightly cloudy and 100% is cloudy. Only available if an OpenWeather API key is defined. |
+| `apikey`   | Your [OpenWeather API key](https://openweathermap.org/api), optional  |
+| `enableWeatherIntegration` | Enables the weather integration if an OpenWeather API key is set. Turn this off to keep the weather debug output but disable the overcast checks. |
+| `highestAcceptableOvercast` | Overcast threshold in percent which is considered as sunny and below which the sensor should be activated. Lower values are sunny, higher values are cloudy. When automating window covers, setting lower values here will open window covers for just few clouds while higher values will keep them shut even if the sky is cloudy. Only available if an OpenWeather API key is defined and weather integration is enabled. |
 | `weatherUpdateIntervalSeconds` | The smaller the interval, the quicker the response to sun position and overcast updates but the more traffic it'll create. The free tier of the OpenWeather API is limited to 1,000,000 requests per month which is roughly one call every 3 seconds for a whole month. |
 | `sensors`  | Array of objects containing configuration for the sensors, see below |
 | `debugLog` | Debug log output, optional, default: false                 |

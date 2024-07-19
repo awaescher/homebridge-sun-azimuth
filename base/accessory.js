@@ -13,7 +13,7 @@ class SunAzimuthAccessory {
     this.lastupdate = 0;
     if (this.platformConfig.apikey) {
       this.getWeather();
-      setInterval(() => { this.getWeather(); }, 294997);
+      setInterval(() => { this.getWeather(); }, this.platformConfig.weatherUpdateIntervalSeconds * 1000);
     }
   }
 
@@ -80,7 +80,7 @@ class SunAzimuthAccessory {
 
   updateState() {
     const { config, platformConfig, log } = this;
-    const { lat, long, apikey, highestAcceptableOvercast } = platformConfig;
+    const { lat, long, apikey, enableWeatherIntegration, highestAcceptableOvercast } = platformConfig;
     const { lowerThreshold, upperThreshold, lowerAltitudeThreshold, upperAltitudeThreshold } = config;
     const azimuthThresholds = [lowerThreshold, upperThreshold];
 
@@ -118,8 +118,12 @@ class SunAzimuthAccessory {
     // Sun is in relevant azimuth and altitude range, lets check daylight and clouds
     if (newState && apikey) {
       let overcast = this.returnOvercastFromCache();
-      if (platformConfig.debugLog) log(`Overcast (cloud state): ${overcast}%`);
-      newState = overcast <= highestAcceptableOvercast;
+      
+      if (platformConfig.debugLog)
+        log(`Overcast (cloud state): ${overcast}%`);
+
+      if (enableWeatherIntegration)
+        newState = overcast <= highestAcceptableOvercast;
     }
 
     return newState;

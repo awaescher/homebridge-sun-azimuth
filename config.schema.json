@@ -23,10 +23,17 @@
                 "description": "If API key is provided, sunhsine is reported only during daylight times when sky is not overcast",
                 "required": false
             },
+            "enableWeatherIntegration": {
+                "type": "boolean",
+                "title": "Enable weather integration",
+                "description": "Enables the weather integration if an OpenWeather API key is set. Turn this off to keep the weather debug output but disable the overcast checks.",
+                "required": true,
+                "default": true
+            },
             "highestAcceptableOvercast": {
                 "type": "number",
-                "title": "Highest acceptable overcast (in percent)",
-                "description": "Overcast threshold in percent, below which the sensor should be activated. 0% is sunny, 25% is slightly cloudy and 100% is cloudy. Only available if an OpenWeather API key is defined.",
+                "title": "Acceptable overcast (in percent) which is considered as sunny",
+                "description": "Overcast threshold in percent which is considered as sunny and below which the sensor should be activated. Lower values are sunny, higher values are cloudy. When automating window covers, setting lower values here will open window covers for just few clouds while higher values will keep them shut even if the sky is cloudy. Only available if an OpenWeather API key is defined and weather integration is enabled.",
                 "required": true,
                 "default": 25,
                 "minimum": 0,
