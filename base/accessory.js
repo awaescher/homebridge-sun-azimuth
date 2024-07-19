@@ -81,7 +81,7 @@ class SunAzimuthAccessory {
   updateState() {
     const { config, platformConfig, log } = this;
     const { lat, long, apikey, enableWeatherIntegration, highestAcceptableOvercast } = platformConfig;
-    const { lowerThreshold, upperThreshold, lowerAltitudeThreshold, upperAltitudeThreshold } = config;
+    const { lowerThreshold, upperThreshold, minimumTemperatureCelsuisConsideredSunny, lowerAltitudeThreshold, upperAltitudeThreshold } = config;
     const azimuthThresholds = [lowerThreshold, upperThreshold];
 
     if (!lat || !long || typeof lat !== 'number' || typeof long !== 'number') {
@@ -104,12 +104,12 @@ class SunAzimuthAccessory {
     const isWithinThreshold = (position) => position >= azimuthThresholds[0] && position <= azimuthThresholds[1] && sunPosAltitude >= lowerAltitudeThreshold && sunPosAltitude <= upperAltitudeThreshold;
 
     let newState = isWithinThreshold(sunPosDegrees);
-    
+
     if (azimuthThresholds[0] < 0 && !newState) {
       sunPosDegrees = -(360 - sunPosDegrees);
       newState = isWithinThreshold(sunPosDegrees);
     }
-    
+
     if (azimuthThresholds[1] > 360 && !newState) {
       sunPosDegrees = 360 + sunPosDegrees;
       newState = isWithinThreshold(sunPosDegrees, azimuthThresholds);
@@ -118,12 +118,18 @@ class SunAzimuthAccessory {
     // Sun is in relevant azimuth and altitude range, lets check daylight and clouds
     if (newState && apikey) {
       let overcast = this.returnOvercastFromCache();
-      
-      if (platformConfig.debugLog)
-        log(`Overcast (cloud state): ${overcast}%`);
+      let temperatureDegreeCelsius = this.returnTemperatureDegreeCelsiusFromCache();
 
-      if (enableWeatherIntegration)
-        newState = overcast <= highestAcceptableOvercast;
+      if (enableWeatherIntegration) {
+        const isOvercastAcceptable = overcast <= highestAcceptableOvercast
+        const isMinimumTemperatureReached = temperatureDegreeCelsius > minimumTemperatureCelsuisConsideredSunny;
+        newState = isOvercastAcceptable && isMinimumTemperatureReached;
+        if (platformConfig.debugLog)
+          log(`Temperature: ${temperatureDegreeCelsius}°C, overcast (cloud state): ${overcast}% => New state is ${newState} (isOvercastAcceptable: ${isOvercastAcceptable}, isMinimumTemperatureReached ${isMinimumTemperatureReached})`);
+      } else {
+        if (platformConfig.debugLog)
+          log(`Temperature: ${temperatureDegreeCelsius}°C, overcast (cloud state): ${overcast}% (weather integration is disabled)`);
+      }
     }
 
     return newState;
@@ -149,29 +155,37 @@ class SunAzimuthAccessory {
         if (platformConfig.debugLog) log("Checking weather: %s", url);
         request(url, function (error, response, responseBody) {
           if (error) {
-              log("HTTP get weather function failed: %s", error.message);
-              reject(error);
+            log("HTTP get weather function failed: %s", error.message);
+            reject(error);
           } else {
-              try {
-                  if (platformConfig.debugLog) log("Server response:", responseBody);
-                  this.cachedWeatherObj = JSON.parse(responseBody);
-                  this.lastupdate = (new Date().getTime() / 1000);
-                  log(`Overcast (cloud state): ${this.returnOvercastFromCache()}%`);
-                  resolve(response.statusCode);
-              } catch (error2) {
-                  log("Getting Weather failed: %s", error2, responseBody);
-                  reject(error2);
-              }
+            try {
+              if (platformConfig.debugLog) log("Server response:", responseBody);
+              this.cachedWeatherObj = JSON.parse(responseBody);
+              this.lastupdate = (new Date().getTime() / 1000);
+              log(`Temperature: ${this.returnTemperatureDegreeCelsiusFromCache()}°C, overcast (cloud state): ${this.returnOvercastFromCache()}%`);
+              resolve(response.statusCode);
+            } catch (error2) {
+              log("Getting Weather failed: %s", error2, responseBody);
+              reject(error2);
+            }
           }
         }.bind(this))
       })
     }
   };
 
+  returnTemperatureDegreeCelsiusFromCache() {
+    var value;
+    if (this.cachedWeatherObj && this.cachedWeatherObj["main"]) {
+      value = parseFloat(this.cachedWeatherObj["main"]["temp"]) / 10;
+    }
+    return value;
+  };
+
   returnOvercastFromCache() {
     var value;
     if (this.cachedWeatherObj && this.cachedWeatherObj["clouds"]) {
-        value = parseFloat(this.cachedWeatherObj["clouds"]["all"]);
+      value = parseFloat(this.cachedWeatherObj["clouds"]["all"]);
     }
     return value;
   };

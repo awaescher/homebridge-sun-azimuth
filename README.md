@@ -41,6 +41,7 @@ Define contact sensors for one or more sections of the sky, e.g. for windows loo
 | `name`           | Display name of the sensor                                                                                |
 | `lowerThreshold` | Left side of sky section within which the sensor should activate |
 | `upperThreshold` | Right side of sky section within which the sensor should activate |
+| `minimumTemperatureCelsuisConsideredSunny` | Sets a minimum temperature that is required so that the sensor can be activated. If the temperature stays below this value, the sensor will not activate which allows automated windows blinds to stay open on cold days. Only available if an OpenWeather API key is defined and weather integration is enabled. |
 | `lowerAltitudeThreshold` | Lower altitude threshold for the sun's position above the horizon, above which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith. |
 | `upperAltitudeThreshold` | Upper altitude threshold for the sun's position above the horizon, below which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith. |
 

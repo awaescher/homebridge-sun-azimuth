@@ -1,6 +1,9 @@
 ## Change Log
 
-### v0.3.4 (2024/07/18 21:24)
+### v0.3.7 (2024/07/19 18:24)
+- feature: Add a minimum temperature per zone that has to be reached before it can be considered to be sunny
+
+### v0.3.0 (2024/07/18 21:24)
 - feature: Make "Highest acceptable overcast" configurable
 - feature: Make "Lower/Upper Altitude Thresholds" configurable per sensor
 - feature: Make the weather update interval configurable

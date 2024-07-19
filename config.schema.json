@@ -77,6 +77,15 @@
                             "description": "Right side of sky section within which the sensor should activate",
                             "required": true
                         },
+                        "minimumTemperatureCelsuisConsideredSunny": {
+                            "type": "number",
+                            "title": "Minimum temperature in °C which is considered sunny",
+                            "description": "Sets a minimum temperature that is required so that the sensor can be activated. If the temperature stays below this value, the sensor will not activate which allows automated windows blinds to stay open on cold days. Only available if an OpenWeather API key is defined and weather integration is enabled.",
+                            "required": true,
+                            "default": 20,
+                            "minimum": 0,
+                            "maximum": 100
+                        },
                         "lowerAltitudeThreshold": {
                             "type": "number",
                             "title": "Lower Altitude Threshold",
