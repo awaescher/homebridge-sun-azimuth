@@ -1,7 +1,7 @@
 {
   "name": "homebridge-sun-azimuth",
   "displayName": "Homebridge Sun Azimuth",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Homebridge plugin for contact sensors monitoring sun position, daylight and cloudiness",
   "author": "awaescher",
   "contributors": [
