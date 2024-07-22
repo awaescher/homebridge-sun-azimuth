@@ -128,7 +128,7 @@ class SunAzimuthPlatform {
   getWeatherTemperaturCelsius() {
     var value;
     if (this.cachedWeatherObj && this.cachedWeatherObj["main"]) {
-      value = parseFloat(this.cachedWeatherObj["main"]["temp"]) / 10;
+      value = parseFloat(this.cachedWeatherObj["main"]["temp"]);
     }
     return value;
   };
@@ -151,7 +151,7 @@ class SunAzimuthPlatform {
 
     let p = new Promise((resolve, reject) => {
 
-      var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + config.apikey + '&lat=' + config.lat + '&lon=' + config.long;
+      var url = 'http://api.openweathermap.org/data/2.5/weather?appid=' + config.apikey + '&units=metric&lat=' + config.lat + '&lon=' + config.long;
       if (config.debugLog)
         log("Checking weather: %s", url);
 
