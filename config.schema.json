@@ -69,22 +69,28 @@
                             "type": "number",
                             "title": "Lower Threshold",
                             "description": "Left side of sky section within which the sensor should activate",
-                            "required": true
+                            "required": true,
+                            "default": 0,
+                            "minimum": -360,
+                            "maximum": 720
                         },
                         "upperThreshold": {
                             "type": "number",
                             "title": "Upper Threshold",
                             "description": "Right side of sky section within which the sensor should activate",
-                            "required": true
+                            "required": true,
+                            "default": 0,
+                            "minimum": -360,
+                            "maximum": 720
                         },
                         "minimumTemperatureCelsuisConsideredSunny": {
                             "type": "number",
                             "title": "Minimum temperature in °C which is considered sunny",
-                            "description": "Sets a minimum temperature that is required so that the sensor can be activated. If the temperature stays below this value, the sensor will not activate which allows automated windows blinds to stay open on cold days. Only available if an OpenWeather API key is defined and weather integration is enabled.",
+                            "description": "Sets a minimum temperature that is required so that the sensor can be activated. If the temperature stays below this value, the sensor will not activate which allows automated windows blinds to stay closed on cold days. Only available if an OpenWeather API key is defined and weather integration is enabled.",
                             "required": true,
                             "default": 20,
-                            "minimum": 0,
-                            "maximum": 100
+                            "minimum": -40,
+                            "maximum": 50
                         },
                         "lowerAltitudeThreshold": {
                             "type": "number",
@@ -92,8 +98,8 @@
                             "description": "Lower altitude threshold for the sun's position above the horizon, above which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith.",
                             "required": true,
                             "default": 0,
-                            "minimum": 0,
-                            "maximum": 360
+                            "minimum": -90,
+                            "maximum": 90
                         },
                         "upperAltitudeThreshold": {
                             "type": "number",
@@ -101,8 +107,8 @@
                             "description": "Upper altitude threshold for the sun's position above the horizon, below which the sensor should activate. The threshold is measured in degrees, with 0° being on the horizon and 90° being at the zenith.",
                             "required": true,
                             "default": 90,
-                            "minimum": 0,
-                            "maximum": 360
+                            "minimum": -90,
+                            "maximum": 90
                         }
                     }
                 }
