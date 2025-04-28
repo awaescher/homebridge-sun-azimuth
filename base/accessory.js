@@ -84,7 +84,7 @@ class SunAzimuthAccessory {
 
     const sunPos = suncalc.getPosition(Date.now(), lat, long);
     let sunPosDegrees = Math.abs((sunPos.azimuth * 180) / Math.PI + 180);
-    let sunPosAltitude = Math.abs(sunPos.altitude * 90);
+    let sunPosAltitude = Math.abs(sunPos.altitude * 90 / (Math.PI / 2));
 
     if (platformConfig.debugLog)
       log(`${name}: Current azimuth: ${sunPosDegrees}°, altitude: ${sunPosAltitude}°`);
